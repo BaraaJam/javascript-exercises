@@ -19,13 +19,20 @@ const contentArea = document.getElementById("content-area");
 // - A <p> for the body
 // - Two buttons with classes 'btn-like' and 'btn-share'
 function createCardHTML(article) {
-    // Your code here
+    return `
+        <div class="card">
+            <h3>${article.title}</h3>
+            <p>${article.body}</p>
+            <button class="btn btn-like">Like ❤️</button>
+            <button class="btn btn-share">Share 🔗</button>
+        </div>
+    `;
 }
 
 // Step 2: Add click event listener to #load-btn
 // Hint: Loop through 'articles' array and append HTML to 'contentArea'
 loadBtn.addEventListener("click", () => {
-    // Your code here
+    contentArea.innerHTML = articles.map(createCardHTML).join("");
 });
 
 // Step 3: Implement Event Delegation for the Like and Share buttons
@@ -33,11 +40,16 @@ loadBtn.addEventListener("click", () => {
 contentArea.addEventListener("click", (e) => {
     // 4. Handle Like Button
     if (e.target.classList.contains("btn-like")) {
-        // Toggle class 'liked' and change text between "Like ❤️" and "Liked! ✅"
+        e.target.classList.toggle("liked");
+        e.target.textContent = e.target.classList.contains("liked")
+            ? "Liked! ✅"
+            : "Like ❤️";
     }
 
     // 5. Handle Share Button
     if (e.target.classList.contains("btn-share")) {
-        // Get the title from the card and show an alert
+        const card = e.target.closest(".card");
+        const title = card.querySelector("h3").textContent;
+        alert(`Shared: "${title}"`);
     }
 });
